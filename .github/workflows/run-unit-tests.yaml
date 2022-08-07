@@ -18,6 +18,8 @@ jobs:
           - os: 'ubuntu-latest'
             compiler: 'msvc'
           - os: 'macos-latest'
+            compiler: 'gcc'
+          - os: 'macos-latest'
             compiler: 'msvc'
           - os: 'windows-latest'
             compiler: 'gcc'
