@@ -38,7 +38,7 @@ jobs:
         with:
           version: ${{ matrix.version }}
 
-      - if: matrix.compiler == 'msvc'
+      - if: matrix.compiler == 'msvc' and matrix.os == 'windows-latest'
         uses: microsoft/setup-msbuild@v1.0.3
         with:
           vs-version: '[${{ matrix.version }},)'
