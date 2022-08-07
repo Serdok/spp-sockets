@@ -1,0 +1,27 @@
+# Build artefacts
+**build**/
+*.log
+
+
+# IDE directories
+.idea/
+
+.vscode/launch.json
+.vscode/settings.json
+.vscode/tasks.json
+.devcontainer/
+!.devcontainer/README.md
+!.devcontainer/recommended-devcontainer.json
+!.devcontainer/recommended-Dockerfile
+
+.c9/
+
+.settings/
+
+*.swo
+*.swp
+.vimrc
+.nvimrc
+
+# OS hidden files
+.DS_Store
