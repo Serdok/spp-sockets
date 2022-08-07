@@ -36,7 +36,7 @@ jobs:
         run: sudo apt-get install -y gcc-11
 
       - if: matrix.compiler == 'clang-14'
-        run: sudo apt-get install -y clang-14
+        run: sudo apt-get install -y llvm-14
 
       - name: Configure CMake
         run: cmake --log-level=VERBOSE -B "${{ github.workspace }}/build" -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DENABLE_TESTING=ON -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}
