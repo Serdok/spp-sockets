@@ -14,13 +14,19 @@ jobs:
       matrix:
         os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
         compiler: ['gcc', 'clang', 'msvc']
-        include:
-          - version: '12'
-            compiler: 'gcc'
-          - version: '14'
-            compiler: 'clang'
-          - version: '17.1'
+        exclude:
+          - os: ['ubuntu-latest', 'macos-latest']
             compiler: 'msvc'
+          - os: 'windows-latest'
+            compiler: ['gcc', 'clang']
+        include:
+          - compiler: 'gcc'
+            version: '12'
+          - compiler: 'clang'
+            version: '14'
+          - os: 'windows-latest'
+            version: '17.1'
+
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -38,7 +44,7 @@ jobs:
         with:
           version: ${{ matrix.version }}
 
-      - if: matrix.compiler == 'msvc' && matrix.os == 'windows-latest'
+      - if: matrix.os == 'windows-latest'
         uses: microsoft/setup-msbuild@v1.0.3
         with:
           vs-version: '[${{ matrix.version }},)'
