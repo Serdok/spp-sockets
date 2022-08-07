@@ -41,6 +41,8 @@ jobs:
         with:
           submodules: true
 
+      - uses: Homebrew/actions/setup-homebrew@master
+
       - if: matrix.compiler == 'gcc'
         run: sudo brew install gcc@${{ matrix.version }}
 
