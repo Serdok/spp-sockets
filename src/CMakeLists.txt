@@ -34,7 +34,7 @@ target_link_libraries(
 # Set target properties
 set_target_properties(
         ${PROJECT_NAME} PROPERTIES
-        CXX_STANDARD 23
+        CXX_STANDARD 20
         CXX_STANDARD_REQUIRED TRUE
         VERSION ${PROJECT_VERSION}
 )
