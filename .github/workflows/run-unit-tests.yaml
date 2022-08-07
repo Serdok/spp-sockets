@@ -20,7 +20,9 @@ jobs:
           - os: 'macos-latest'
             compiler: 'msvc'
           - os: 'windows-latest'
-            compiler: ['gcc', 'clang']
+            compiler: 'gcc'
+          - os: 'windows-latest'
+            compiler: 'clang'
         include:
           - compiler: 'gcc'
             version: '12'
