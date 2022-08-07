@@ -36,7 +36,7 @@ jobs:
         run: sudo apt-get install -y gcc-11
 
       - if: matrix.compiler == 'clang-14'
-        uses: myci-actions/add-deb-repo@v10
+        uses: myci-actions/add-deb-repo@10
         with:
           repo: deb http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main
           repo-name: llvm
