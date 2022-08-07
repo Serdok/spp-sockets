@@ -12,6 +12,7 @@
 #include <bit>
 #include <concepts>
 #include <cstdint>
+#include <cstring>
 
 
 namespace spp {
@@ -31,13 +32,20 @@ namespace spp {
         return array;
     }
 
-    template<typename T>
+    template<typename T> requires std::is_integral_v<T>
     constexpr T swap_byte_order(T n) {
-        if constexpr (std::endian::native == std::endian::big) {
+        if constexpr (std::endian::native == std::endian::big or sizeof(T) == 1) {
             return n;
         }
 
-        return std::byteswap(n);
+        auto bytes = convert_to_bytes_array(n);
+        decltype(bytes) reversed{};
+        std::reverse_copy(bytes.begin(), bytes.end(), reversed.begin());
+
+        T dest;
+        std::memcpy(&dest, reversed.begin(), reversed.size());
+
+        return dest;
     }
 }
 

@@ -12,7 +12,7 @@ option(BUILD_SHARED_LIBS "Configure CMake to build a shared library instead of a
 # Set global parameters
 list(PREPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
 set(namespace "spp")
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 
 # Include project scripts
 add_subdirectory(scripts/)
