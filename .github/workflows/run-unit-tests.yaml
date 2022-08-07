@@ -33,7 +33,7 @@ jobs:
           submodules: true
 
       - if: matrix.compiler == 'gcc-11'
-        run: sudo apt-get install -y gcc-11
+        run: sudo apt-get install -y gcc-11 cc1plus
 
       - if: matrix.compiler == 'clang-14' && matrix.os == 'ubuntu-latest'
         uses: myci-actions/add-deb-repo@10
