@@ -37,7 +37,7 @@ jobs:
         run: cmake --log-level=VERBOSE -B "${{ github.workspace }}/build" -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DENABLE_TESTING=ON
 
       - name: Build project
-        run: cmake --log-level=VERBOSE --build "${{ github.workspace }}/build"
+        run: cmake --build "${{ github.workspace }}/build"
 
       - name: Run unit tests
         run: ctest -C ${{ env.BUILD_TYPE }} --test-dir "${{ github.workspace }}/build/tests"
