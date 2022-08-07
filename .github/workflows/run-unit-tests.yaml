@@ -41,7 +41,7 @@ jobs:
           repo: deb http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main
           repo-name: llvm
           keys-asc: https://apt.llvm.org/llvm-snapshot.gpg.key
-          install: clang
+          install: clang-14
 
       - name: Configure CMake
         run: cmake --log-level=VERBOSE -B "${{ github.workspace }}/build" -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DENABLE_TESTING=ON -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}
