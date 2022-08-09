@@ -45,11 +45,19 @@ namespace spp {
         [[nodiscard]] std::string port_to_string() const;
         [[nodiscard]] std::string to_string() const;
 
+        [[nodiscard]] constexpr explicit operator sockaddr_in() const {
+            sockaddr_in addr{};
+            addr.sin_family = static_cast<int>(m_format);
+            addr.sin_addr.s_addr = m_network_address;
+            addr.sin_port = m_network_port;
+            return addr;
+        }
+
     private:
         constexpr void update_data() {
             // In the C struct sockaddr_in, the port is assigned before the address.
             // Therefore, when casting a sockaddr_in* to a sockaddr*,
-            // the sockaddr.sa_data is filled with the bytes of the port number, then the network address
+            // the sockaddr.sa_data is filled with the bytes of the network port number, then the network address
 
             auto port_bytes = convert_to_bytes_array(m_network_port);
             auto address_bytes = convert_to_bytes_array(m_network_address);
@@ -65,6 +73,73 @@ namespace spp {
         uint32_t m_network_address;
         uint16_t m_network_port;
     };
+
+    // Outputs a SocketAddress using the following format:
+    // "`address format`-`address IP address`:`address port number`"
+    template<typename char_t, typename traits>
+    std::basic_ostream<char_t, traits>& operator <<(std::basic_ostream<char_t, traits>& out, const IPv4Address& address)  {
+        typename std::basic_ostream<char_t, traits>::sentry sentry(out);
+        auto stream_state = std::ios_base::goodbit;
+
+        try {
+            if (sentry) {
+                // Stream ready for output
+                out << address.to_string();
+            }
+        } catch (std::ios_base::failure& error) {
+            stream_state |= std::ios_base::badbit;
+        }
+
+        out.setstate(stream_state);
+        return out;
+    }
+
+    template<typename char_t, typename traits>
+    std::basic_istream<char_t, traits>& operator >>(std::basic_istream<char_t, traits>& in, IPv4Address& address) {
+        // Format: `address format`-`address IP address`:`address port number`
+        typename std::basic_istream<char_t, traits>::sentry sentry(in);
+        auto stream_state = std::ios_base::goodbit;
+
+        auto read_ip_byte = [&](int shift_pos, bool check_next = true) {
+            int byte = 0;
+            in >> byte;
+            if (check_next and in.get() != '.') {
+                stream_state |= std::ios_base::failbit;
+//                throw std::ios_base::failure("expected '.' character while parsing an IPv4Address");
+            }
+
+            return byte << (8 * shift_pos);
+        };
+
+        try {
+            if (sentry) {
+                // Stream ready for input
+                uint32_t ip_address = 0;
+                uint16_t port = 0;
+
+                auto byte1 = read_ip_byte(3);
+                auto byte2 = read_ip_byte(2);
+                auto byte3 = read_ip_byte(1);
+                auto byte4 = read_ip_byte(0, false);
+                ip_address = byte1 bitor byte2 bitor byte3 bitor byte4;
+
+                if (in.get() != ':') {
+                    stream_state |= std::ios_base::failbit;
+//                    throw std::ios_base::failure("expected ':' character while parsing an IPv4Address");
+                }
+                in >> port;
+
+                address.set_address_format(spp::address_format::INet_v4);
+                address.set_host_address(ip_address);
+                address.set_host_port(port);
+            }
+        } catch (std::ios_base::failure& error) {
+            stream_state |= std::ios_base::badbit;
+        }
+
+        in.setstate(stream_state);
+        return in;
+    }
 }
 
 #endif //SPP_SOCKETS_IPV4ADDRESS_H

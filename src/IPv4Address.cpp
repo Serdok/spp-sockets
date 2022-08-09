@@ -3,10 +3,8 @@
 //
 
 #include "spp-socket/IPv4Address.h"
-#include "spp-socket/utils.h"
 
 #include <sstream>
-
 #include <fmt/format.h>
 
 namespace spp {
@@ -15,7 +13,7 @@ namespace spp {
 
         auto bytes = convert_to_bytes_array(m_host_address);
 
-        return fmt::format("{}.{}.{}.{}", bytes.at(0), bytes.at(1), bytes.at(2), bytes.at(3));
+        return fmt::format("{}.{}.{}.{}", bytes.at(3), bytes.at(2), bytes.at(1), bytes.at(0));
     }
 
     std::string IPv4Address::port_to_string() const {

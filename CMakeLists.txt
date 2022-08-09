@@ -30,3 +30,6 @@ add_subdirectory(src/)
 if (ENABLE_TESTING OR (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME))
     add_subdirectory(tests/)
 endif()
+
+add_executable(sandbox sandbox.cpp)
+target_link_libraries(sandbox PRIVATE ${PROJECT_NAME})

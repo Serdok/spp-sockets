@@ -11,6 +11,9 @@
 #else
 // Base classes and defines
 #include <sys/socket.h>
+
+// IP v4
+#include <arpa/inet.h>
 #endif
 
 #endif //SPP_SOCKETS_PLATFORM_H

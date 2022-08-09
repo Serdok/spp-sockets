@@ -2,12 +2,16 @@
 enable_testing()
 include(GoogleTest)
 
+function(create_unit_test module_name)
+    # Create executable
+    add_executable(${module_name}_unit_tests)
+    target_sources(${module_name}_unit_tests PRIVATE ${module_name}_unit_tests.cpp)
+    target_link_libraries(${module_name}_unit_tests PRIVATE ${PROJECT_NAME} gmock gmock_main)
 
-# Executables
-add_executable(ipv4_address_unit_tests)
-target_sources(ipv4_address_unit_tests PRIVATE ipv4_address_unit_tests.cpp)
-target_link_libraries(ipv4_address_unit_tests PRIVATE ${PROJECT_NAME} gmock gmock_main)
+    # Discover tests
+    gtest_discover_tests(ipv4_address_unit_tests)
+endfunction()
 
-
-# Discover tests in above executables
-gtest_discover_tests(ipv4_address_unit_tests)
+# Unit tests
+create_unit_test(ipv4_address)
+create_unit_test(socket)

@@ -5,8 +5,6 @@
 #ifndef SPP_SOCKETS_UTILS_H
 #define SPP_SOCKETS_UTILS_H
 
-#include "errors.h"
-
 #include <array>
 #include <algorithm>
 #include <bit>
@@ -16,12 +14,6 @@
 
 
 namespace spp {
-    template<typename T> requires std::is_default_constructible_v<T>
-    struct ErrorOr {
-        T t;
-        spp::errors::errc ec;
-    };
-
     template<typename T> requires std::integral<T>
     constexpr std::array<uint8_t, sizeof(T)> convert_to_bytes_array(const T n) {
         auto array = std::array<uint8_t, sizeof(T)>();
@@ -34,7 +26,7 @@ namespace spp {
 
     template<typename T> requires std::is_integral_v<T>
     constexpr T swap_byte_order(T n) {
-        if constexpr (std::endian::native == std::endian::big or sizeof(T) == 1) {
+        if constexpr (std::endian::native == std::endian::big or sizeof(T) == 1) {  // NOLINT
             return n;
         }
 
@@ -46,6 +38,13 @@ namespace spp {
         std::memcpy(&dest, reversed.begin(), reversed.size());
 
         return dest;
+    }
+
+    inline void throw_with_errno_if_error(int code) {
+        if (code < 0) {
+            auto ec = std::make_error_code(static_cast<std::errc>(errno));
+            throw std::system_error(ec);
+        }
     }
 }
 

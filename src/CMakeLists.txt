@@ -9,7 +9,7 @@ target_include_directories(
 
 target_sources(
         ${PROJECT_NAME}
-        PRIVATE SocketAddress.cpp IPv4Address.cpp errors.cpp
+        PRIVATE SocketAddress.cpp IPv4Address.cpp errors.cpp Socket.cpp
 )
 
 target_compile_definitions(
